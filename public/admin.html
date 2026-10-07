@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="管理、公開並啟動 Slidev 簡報。" />
+    <meta name="theme-color" content="#0a0f1e" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>簡報管理 · Slidev</title>
+  </head>
+  <body>
+    <section class="login-view" id="login-view" aria-labelledby="login-title">
+      <form class="login-card" id="login-form">
+        <span class="brand-mark login-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <p class="section-kicker">SLIDEV CONTROL ROOM</p>
+        <h1 id="login-title">登入簡報管理</h1>
+        <p>公開簡報、切換 Live 狀態，以及開啟 Presenter View。</p>
+        <label for="password">管理密碼</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required autofocus />
+        <p class="form-error is-hidden" id="login-error" role="alert"></p>
+        <button class="button button-primary" type="submit">登入</button>
+        <a href="/release">返回公開簡報</a>
+      </form>
+    </section>
+
+    <div class="shell is-hidden" id="admin-view">
+      <header class="topbar">
+        <a class="brand" href="/slides" aria-label="簡報管理首頁">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>簡報管理</span>
+        </a>
+        <nav class="top-actions" aria-label="管理操作">
+          <a class="text-link" href="/release" target="_blank" rel="noreferrer">公開頁面</a>
+          <button class="icon-button" id="refresh-button" type="button" aria-label="重新整理簡報清單" title="重新整理">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5M18.4 9A7 7 0 0 0 6.7 6.7L4 9m16 6-2.7 2.3A7 7 0 0 1 5.6 15"/></svg>
+          </button>
+          <button class="button button-ghost compact-button" id="logout-button" type="button">登出</button>
+        </nav>
+      </header>
+
+      <main>
+        <section class="live-panel" aria-labelledby="live-title">
+          <div class="live-copy">
+            <div class="eyebrow"><span class="status-dot" id="status-dot"></span><span id="status-label">讀取狀態</span></div>
+            <h1 id="live-title">目前沒有 Live 簡報</h1>
+            <p id="live-description">選擇已公開的簡報開始，公開連結會切換成同步的觀眾畫面。</p>
+          </div>
+          <div class="live-actions">
+            <a class="button button-secondary is-disabled" id="audience-button" href="/release" target="_blank" rel="noreferrer" aria-disabled="true">觀眾畫面</a>
+            <button class="button button-danger is-hidden" id="stop-button" type="button">停止簡報</button>
+          </div>
+        </section>
+
+        <section class="library" aria-labelledby="library-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">DECK LIBRARY</p>
+              <h2 id="library-title">所有簡報</h2>
+            </div>
+            <p id="deck-count">載入中</p>
+          </div>
+          <div class="notice is-hidden" id="notice" role="status"></div>
+          <div class="deck-grid" id="deck-grid" aria-live="polite">
+            <article class="deck-card skeleton" aria-hidden="true"></article>
+            <article class="deck-card skeleton" aria-hidden="true"></article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="deck-template">
+      <article class="deck-card">
+        <span class="live-badge is-hidden">LIVE</span>
+        <div class="deck-content">
+          <h3 class="deck-title"></h3>
+          <p class="deck-description"></p>
+        </div>
+        <div class="publication-row">
+          <div><strong>公開顯示</strong><span class="publication-hint"></span></div>
+          <label class="switch">
+            <input class="publish-toggle" type="checkbox" />
+            <span aria-hidden="true"></span>
+            <span class="sr-only">切換公開狀態</span>
+          </label>
+        </div>
+        <div class="deck-meta"></div>
+        <div class="deck-actions">
+          <a class="button button-ghost preview-button" target="_blank" rel="noreferrer">預覽</a>
+          <button class="button button-primary start-button" type="button">開始簡報</button>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="/admin.js"></script>
+  </body>
+</html>

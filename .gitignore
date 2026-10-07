@@ -1,0 +1,16 @@
+node_modules/
+decks/*/node_modules
+dist/
+.env
+.pm2/
+npm-debug.log*
+
+# Runtime publication state. Keep data/.gitkeep in the repository.
+data/*.json
+
+# Private production deck kept on this server only.
+decks/1007-meeting/
+
+# Local screenshots and Playwright output.
+test-results/
+playwright-report/

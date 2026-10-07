@@ -1,0 +1,15 @@
+services:
+  slidev-control-room:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: 3000
+      SLIDEV_PORT: 3031
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    volumes:
+      - slidev-data:/app/data
+
+volumes:
+  slidev-data:

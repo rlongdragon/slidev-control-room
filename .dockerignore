@@ -1,0 +1,12 @@
+.git
+.github
+.env
+.pm2
+node_modules
+decks/*/node_modules
+dist
+data/*.json
+decks/1007-meeting
+test-results
+playwright-report
+npm-debug.log*

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="所有公開的 Slidev 簡報。" />
+    <meta name="theme-color" content="#0a0f1e" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>公開簡報</title>
+  </head>
+  <body>
+    <div class="shell release-shell">
+      <main>
+        <section class="release-list" aria-label="公開簡報">
+          <div class="notice is-hidden" id="release-notice" role="status"></div>
+          <div class="release-grid" id="release-grid" aria-live="polite">
+            <article class="release-card skeleton" aria-hidden="true"></article>
+            <article class="release-card skeleton" aria-hidden="true"></article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="release-template">
+      <article class="release-card">
+        <a class="release-main">
+          <div class="release-preview">
+            <img loading="lazy" alt="" />
+            <span class="live-badge is-hidden">LIVE</span>
+          </div>
+          <div class="release-card-body">
+            <h2 class="deck-title"></h2>
+            <p class="deck-description"></p>
+          </div>
+        </a>
+        <div class="release-card-footer">
+          <a class="export-label" target="_blank" rel="noreferrer">匯出 PDF</a>
+          <a class="open-label"></a>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="/release.js?v=2"></script>
+  </body>
+</html>

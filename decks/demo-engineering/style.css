@@ -1,0 +1,14 @@
+.slidev-layout { color: #e4e7ec; background: #101828; }
+.eng-cover { display: flex; min-height: 100%; flex-direction: column; justify-content: center; padding: 4rem; }
+.eng-cover h1 { margin: 1rem 0 .6rem; color: #fff; font-size: 4.7rem; line-height: 1; letter-spacing: -.06em; }
+.eng-cover p { color: #98a2b3; font-size: 1.45rem; }
+.eng-cover code { width: fit-content; margin-top: 3rem; padding: .45rem .7rem; border: 1px solid #344054; border-radius: .35rem; color: #84adff; background: #1d2939; }
+.eng-status { color: #98a2b3; font-size: .8rem; font-weight: 700; letter-spacing: .14em; }
+.eng-status span { display: inline-block; width: .6rem; height: .6rem; margin-right: .5rem; border-radius: 50%; background: #32d583; }
+.metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem; }
+.metric-grid > div { display: flex; min-height: 9rem; flex-direction: column; justify-content: center; padding: 1.5rem; border: 1px solid #344054; border-radius: .5rem; background: #1d2939; }
+.metric-grid span { color: #fff; font-size: 2.4rem; font-weight: 750; letter-spacing: -.04em; }
+.metric-grid small { margin-top: .35rem; color: #98a2b3; }
+.slidev-layout table { width: 100%; margin-top: 2rem; }
+.slidev-layout th, .slidev-layout td { border-color: #344054; }
+.eng-command { margin-top: 2rem; padding: 1rem 1.4rem; border: 1px solid #344054; border-radius: .5rem; color: #84adff; background: #1d2939; font-family: ui-monospace, monospace; }

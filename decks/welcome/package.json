@@ -1,0 +1,9 @@
+{
+  "name": "slidev-deck-welcome",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@slidev/cli": "52.20.1",
+    "@slidev/theme-default": "0.25.0"
+  }
+}

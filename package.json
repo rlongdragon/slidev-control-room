@@ -1,0 +1,44 @@
+{
+  "name": "slidev-control-room",
+  "version": "1.0.0",
+  "description": "Host, publish, present, and synchronize multiple Slidev decks from one service.",
+  "private": true,
+  "license": "MIT",
+  "keywords": [
+    "slidev",
+    "presentation",
+    "presenter",
+    "self-hosted"
+  ],
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env --watch server/index.mjs",
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "build": "node scripts/build-decks.mjs",
+    "test": "node scripts/test.mjs",
+    "test:smoke": "node scripts/smoke-test.mjs",
+    "screenshots": "node scripts/capture-screenshots.mjs",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
+    "pm2:restart": "pm2 restart slidev-control-room --update-env",
+    "pm2:status": "pm2 status slidev-control-room"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.0.0",
+    "@slidev/theme-default": "^0.25.0",
+    "express": "^5.1.0",
+    "http-proxy": "^1.18.1",
+    "yaml": "^2.8.1"
+  },
+  "overrides": {
+    "braces": "3.0.3",
+    "dompurify": "3.4.16",
+    "image-size": "2.0.4",
+    "katex": "0.19.0"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.63.0"
+  }
+}
