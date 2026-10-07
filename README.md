@@ -23,17 +23,9 @@
 
 ## 運作方式
 
-```mermaid
-flowchart LR
-  A[decks/*/slides.md] --> B[npm run build]
-  B --> C[Static decks + thumbnails]
-  C --> D[Express Control Room]
-  D --> E[/release]
-  D --> F[/slides]
-  F -->|Start Live| G[One Slidev child process]
-  G --> H[Presenter]
-  G --> I[Synchronized audience]
-```
+![Slidev Control Room 運作架構](docs/images/architecture.svg)
+
+<sub>圖表使用 [paperbanana-figprompt](https://github.com/rlongdragon/paperbanana-figprompt) 的 plan → style → generate → self-critique 流程製作；[查看可重現的圖表規格](docs/architecture-figure.prompt.md)。</sub>
 
 沒有 Live 時，`/slide/<id>/` 由 Express 提供建置好的靜態簡報。開始 Live 後，同一條路徑會代理到內部 Slidev dev server，並保留 WebSocket 與 Presenter 同步。
 

@@ -1,0 +1,283 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Slidev Control Room 運作架構</title>
+  <desc id="desc">簡報在 A 機器編輯後建置為靜態 deck，由單一 Control Room 服務管理公開、匯出與一個即時 Slidev 子程序，並將 Presenter 頁碼同步給多位觀眾。</desc>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475467" />
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#175CD3" />
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#12B76A" />
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7F56D9" />
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#F79009" />
+    </marker>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#101828" flood-opacity="0.08" />
+    </filter>
+    <style>
+      text { font-family: Inter, "Noto Sans TC", "PingFang TC", sans-serif; fill: #182230; }
+      .zone { stroke-width: 1.5; }
+      .zone-title { font-size: 18px; font-weight: 750; letter-spacing: 1.5px; }
+      .zone-number { font-size: 14px; font-weight: 800; }
+      .node { fill: #FFFFFF; stroke-width: 1.5; filter: url(#softShadow); }
+      .node-title { font-size: 21px; font-weight: 700; }
+      .node-detail { font-size: 15px; font-weight: 450; fill: #667085; }
+      .code { font-family: "SFMono-Regular", Consolas, monospace; }
+      .edge { fill: none; stroke: #475467; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; marker-end: url(#arrow); }
+      .edge-control { fill: none; stroke: #7F56D9; stroke-width: 2.5; stroke-dasharray: 8 7; stroke-linejoin: round; stroke-linecap: round; marker-end: url(#arrowPurple); }
+      .edge-live { fill: none; stroke: #175CD3; stroke-width: 3.5; stroke-linecap: round; marker-end: url(#arrowBlue); }
+      .edge-start { fill: none; stroke: #12B76A; stroke-width: 3; stroke-linecap: round; marker-end: url(#arrowGreen); }
+      .edge-presenter { fill: none; stroke: #F79009; stroke-width: 3; stroke-linecap: round; marker-start: url(#arrowOrange); marker-end: url(#arrowOrange); }
+      .edge-label { font-size: 13px; font-weight: 650; }
+      .icon { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="#FFFFFF" />
+
+  <!-- Zone backgrounds -->
+  <rect class="zone" x="50" y="70" width="360" height="760" rx="18" fill="#F5F5DC" stroke="#D6D3B8" />
+  <rect class="zone" x="445" y="70" width="685" height="760" rx="18" fill="#E6F3FF" stroke="#A9C7E8" />
+  <rect class="zone" x="1165" y="70" width="385" height="760" rx="18" fill="#E0F2F1" stroke="#A7D7D3" />
+
+  <!-- Zone headers -->
+  <g>
+    <rect x="78" y="94" width="28" height="28" rx="8" fill="#EAAA08" />
+    <text class="zone-number" x="92" y="113" text-anchor="middle" fill="#FFFFFF">1</text>
+    <text class="zone-title" x="120" y="114">編輯與建置</text>
+  </g>
+  <g>
+    <rect x="475" y="94" width="28" height="28" rx="8" fill="#175CD3" />
+    <text class="zone-number" x="489" y="113" text-anchor="middle" fill="#FFFFFF">2</text>
+    <text class="zone-title" x="517" y="114">SLIDEV CONTROL ROOM</text>
+  </g>
+  <g>
+    <rect x="1195" y="94" width="28" height="28" rx="8" fill="#0E9384" />
+    <text class="zone-number" x="1209" y="113" text-anchor="middle" fill="#FFFFFF">3</text>
+    <text class="zone-title" x="1237" y="114">管理與觀看</text>
+  </g>
+
+  <!-- Connections: authoring -->
+  <path class="edge" d="M230 262 V330" />
+  <g transform="translate(246 284)">
+    <rect width="48" height="25" rx="12.5" fill="#FFFFFF" stroke="#D6D3B8" />
+    <text class="edge-label" x="24" y="17" text-anchor="middle">編輯</text>
+  </g>
+  <path class="edge" d="M230 442 V510" />
+  <g transform="translate(246 464)">
+    <rect width="48" height="25" rx="12.5" fill="#FFFFFF" stroke="#D6D3B8" />
+    <text class="edge-label" x="24" y="17" text-anchor="middle">提交</text>
+  </g>
+  <path class="edge" d="M368 566 H449 V371 H505" />
+  <g transform="translate(416 550)">
+    <rect width="52" height="25" rx="12.5" fill="#FFFFFF" stroke="#D0D5DD" />
+    <text class="edge-label code" x="26" y="17" text-anchor="middle">build</text>
+  </g>
+
+  <!-- Connections: service internals -->
+  <path class="edge" d="M787 245 V470 H647 V505" />
+  <g transform="translate(760 449)">
+    <rect width="54" height="25" rx="12.5" fill="#FFFFFF" stroke="#B2CCFF" />
+    <text class="edge-label code" x="27" y="17" text-anchor="middle">HTTP</text>
+  </g>
+  <path class="edge" d="M628 427 V478 H585 V505" />
+  <g transform="translate(553 448)">
+    <rect width="78" height="25" rx="12.5" fill="#FFFFFF" stroke="#B2CCFF" />
+    <text class="edge-label" x="39" y="17" text-anchor="middle">靜態內容</text>
+  </g>
+  <path class="edge-control" d="M947 427 V468 H742 V505" />
+  <g transform="translate(836 440)">
+    <rect width="66" height="25" rx="12.5" fill="#FFFFFF" stroke="#D6BBFB" />
+    <text class="edge-label" x="33" y="17" text-anchor="middle" fill="#6941C6">可見性</text>
+  </g>
+  <path class="edge-start" d="M790 567 H825" />
+  <g transform="translate(748 648)">
+    <rect width="108" height="25" rx="12.5" fill="#FFFFFF" stroke="#ABEFC6" />
+    <text class="edge-label code" x="54" y="17" text-anchor="middle" fill="#067647">Start / Switch</text>
+  </g>
+  <path class="edge" d="M700 427 V464 H807 V734 H665" />
+  <path class="edge" d="M910 734 H1210" />
+  <g transform="translate(986 716)">
+    <rect width="114" height="25" rx="12.5" fill="#FFFFFF" stroke="#D0D5DD" />
+    <text class="edge-label code" x="57" y="17" text-anchor="middle">window.print()</text>
+  </g>
+
+  <!-- Connections: controls and delivery -->
+  <path class="edge-control" d="M1210 197 C1140 197 1138 274 1088 274 H810 C790 274 790 450 790 535" />
+  <g transform="translate(1092 250)">
+    <rect width="54" height="25" rx="12.5" fill="#FFFFFF" stroke="#D6BBFB" />
+    <text class="edge-label" x="27" y="17" text-anchor="middle" fill="#6941C6">控制</text>
+  </g>
+  <path class="edge" d="M648 630 V650 H1138 C1175 650 1174 598 1210 598" />
+  <g transform="translate(915 633)">
+    <rect width="136" height="25" rx="12.5" fill="#FFFFFF" stroke="#D0D5DD" />
+    <text class="edge-label" x="68" y="17" text-anchor="middle">閒置：靜態簡報</text>
+  </g>
+  <path class="edge-presenter" d="M1070 542 C1140 542 1142 382 1210 382" />
+  <g transform="translate(1091 419)">
+    <rect width="52" height="25" rx="12.5" fill="#FFFFFF" stroke="#FEDF89" />
+    <text class="edge-label" x="26" y="17" text-anchor="middle" fill="#B54708">切頁</text>
+  </g>
+  <path class="edge-live" d="M1070 598 C1128 598 1152 550 1210 550" />
+  <g transform="translate(1064 564)">
+    <rect width="152" height="25" rx="12.5" fill="#FFFFFF" stroke="#B2CCFF" />
+    <text class="edge-label" x="76" y="17" text-anchor="middle" fill="#175CD3">Live WebSocket 同步</text>
+  </g>
+
+  <!-- Authoring nodes -->
+  <g>
+    <rect class="node" x="92" y="150" width="276" height="112" rx="10" stroke="#B8B58F" />
+    <g transform="translate(116 180)" color="#9A8B20">
+      <rect class="icon" x="0" y="0" width="42" height="28" rx="3" />
+      <path class="icon" d="M-5 34 H47 M13 28 L10 34 M29 28 L32 34" />
+    </g>
+    <text class="node-title" x="178" y="194">A 機器</text>
+    <text class="node-detail" x="178" y="222">標準 Slidev 專案</text>
+  </g>
+  <g>
+    <rect class="node" x="92" y="330" width="276" height="112" rx="10" stroke="#B8B58F" />
+    <g transform="translate(115 359)" color="#9A8B20">
+      <path class="icon" d="M0 8 H16 L21 14 H45 V40 H0 Z" />
+      <path class="icon" d="M26 0 H40 L47 7 V29 H26 Z M40 0 V7 H47" />
+    </g>
+    <text class="node-title code" x="178" y="374">decks/&lt;id&gt;/</text>
+    <text class="node-detail code" x="178" y="398">slides.md · public/</text>
+    <text class="node-detail code" x="178" y="420">layouts/</text>
+  </g>
+  <g>
+    <rect x="92" y="510" width="276" height="112" rx="10" fill="#FFF7E6" stroke="#EAAA08" stroke-width="1.5" filter="url(#softShadow)" />
+    <g transform="translate(118 542)" color="#B54708">
+      <circle class="icon" cx="20" cy="20" r="9" />
+      <path class="icon" d="M20 1 V7 M20 33 V39 M1 20 H7 M33 20 H39 M6.5 6.5 L11 11 M29 29 L33.5 33.5 M33.5 6.5 L29 11 M11 29 L6.5 33.5" />
+    </g>
+    <text class="node-title code" x="178" y="554">npm run build</text>
+    <text class="node-detail" x="178" y="583">安全設定 · 靜態建置 · 縮圖</text>
+  </g>
+  <g>
+    <rect x="128" y="675" width="204" height="38" rx="19" fill="#FFFDF5" stroke="#D6D3B8" />
+    <text class="edge-label" x="230" y="699" text-anchor="middle" fill="#665E26">上傳或同機器維護</text>
+  </g>
+
+  <!-- Service nodes -->
+  <g>
+    <rect class="node" x="505" y="140" width="565" height="105" rx="10" stroke="#84ADFF" stroke-width="2" />
+    <g transform="translate(540 166)" color="#175CD3">
+      <rect class="icon" width="50" height="50" rx="5" />
+      <path class="icon" d="M8 13 H42 M8 25 H42 M8 37 H42" />
+      <circle cx="14" cy="13" r="2" fill="#175CD3" /><circle cx="14" cy="25" r="2" fill="#175CD3" /><circle cx="14" cy="37" r="2" fill="#175CD3" />
+    </g>
+    <text class="node-title" x="618" y="184">Express Control Room</text>
+    <text class="node-detail" x="618" y="213">單一 PM2 主程序</text>
+    <g transform="translate(915 168)">
+      <rect width="118" height="31" rx="15.5" fill="#EFF4FF" stroke="#B2CCFF" />
+      <circle cx="18" cy="15.5" r="5" fill="#175CD3" />
+      <text class="edge-label" x="68" y="20" text-anchor="middle" fill="#1849A9">ONE SERVICE</text>
+    </g>
+  </g>
+  <g>
+    <rect class="node" x="505" y="315" width="245" height="112" rx="10" stroke="#84ADFF" />
+    <g transform="translate(530 346)" color="#175CD3">
+      <path class="icon" d="M0 8 H28 L35 15 H47 V42 H0 Z" />
+      <path class="icon" d="M9 22 H37 M9 30 H37" />
+    </g>
+    <text class="node-title" x="594" y="359">靜態 deck</text>
+    <text class="node-detail code" x="594" y="385">dist/slides</text>
+    <text class="node-detail code" x="594" y="407">+ thumbnails</text>
+  </g>
+  <g>
+    <rect x="825" y="328" width="245" height="86" fill="#F4F3FF" stroke="#9E77ED" stroke-width="1.5" />
+    <ellipse cx="947.5" cy="328" rx="122.5" ry="13" fill="#FAFAFF" stroke="#9E77ED" stroke-width="1.5" />
+    <path d="M825 414 C825 431 1070 431 1070 414" fill="#F4F3FF" stroke="#9E77ED" stroke-width="1.5" />
+    <g transform="translate(850 348)" color="#7F56D9">
+      <ellipse class="icon" cx="23" cy="8" rx="22" ry="7" />
+      <path class="icon" d="M1 8 V34 C1 43 45 43 45 34 V8 M1 21 C1 30 45 30 45 21" />
+    </g>
+    <text class="node-title" x="914" y="366">公開狀態</text>
+    <text class="node-detail code" x="914" y="394">data/decks.json</text>
+  </g>
+  <g>
+    <rect class="node" x="505" y="505" width="285" height="125" rx="10" stroke="#4A90D9" stroke-width="2" />
+    <g transform="translate(530 542)" color="#175CD3">
+      <circle class="icon" cx="22" cy="22" r="20" />
+      <path class="icon" d="M12 16 H32 M12 28 H32 M22 7 V37" />
+      <path d="M31 11 L37 16 L31 21 M13 23 L7 28 L13 33" fill="none" stroke="#175CD3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <text class="node-title" x="592" y="550">路由與權限控制</text>
+    <text class="node-detail code" x="592" y="580">/release · /slides</text>
+    <text class="node-detail code" x="592" y="604">/slide/&lt;id&gt;</text>
+  </g>
+  <g>
+    <rect x="825" y="505" width="245" height="125" rx="10" fill="#ECFDF3" stroke="#12B76A" stroke-width="2" filter="url(#softShadow)" />
+    <g transform="translate(850 546)" color="#039855">
+      <path class="icon" d="M0 25 H8 L14 10 L23 39 L31 18 L38 25 H48" />
+    </g>
+    <text class="node-title" x="914" y="553">Slidev Live</text>
+    <text class="node-detail" x="914" y="583">最多 1 個子程序</text>
+    <g transform="translate(954 515)">
+      <rect width="103" height="27" rx="13.5" fill="#D1FADF" />
+      <circle cx="15" cy="13.5" r="4" fill="#12B76A" />
+      <text x="60" y="18" text-anchor="middle" font-size="11" font-weight="800" fill="#067647">ON DEMAND</text>
+    </g>
+  </g>
+  <g>
+    <rect class="node" x="665" y="690" width="245" height="88" rx="10" stroke="#84ADFF" />
+    <g transform="translate(690 711)" color="#175CD3">
+      <path class="icon" d="M4 0 H29 L40 11 V46 H4 Z M29 0 V11 H40" />
+      <path class="icon" d="M12 26 H32 M12 34 H27" />
+    </g>
+    <text class="node-title" x="750" y="727">Browser Exporter</text>
+    <text class="node-detail" x="750" y="753">瀏覽器渲染 PDF</text>
+  </g>
+
+  <!-- Client nodes -->
+  <g>
+    <rect class="node" x="1210" y="145" width="295" height="105" rx="10" stroke="#65BEB7" />
+    <g transform="translate(1238 172)" color="#0E9384">
+      <rect class="icon" width="46" height="31" rx="3" />
+      <path class="icon" d="M9 39 H37 M17 31 L14 39 M29 31 L32 39" />
+      <rect x="29" y="18" width="17" height="16" rx="3" fill="#FFFFFF" stroke="#0E9384" stroke-width="2" />
+      <path class="icon" d="M33 18 V14 C33 8 42 8 42 14 V18" />
+    </g>
+    <text class="node-title" x="1306" y="187">管理者</text>
+    <text class="node-detail code" x="1306" y="211">/slides</text>
+    <text class="node-detail" x="1306" y="233">公開 / 開始 / 切換</text>
+  </g>
+  <g>
+    <rect x="1210" y="330" width="295" height="105" rx="10" fill="#FFF6ED" stroke="#F79009" stroke-width="1.5" filter="url(#softShadow)" />
+    <g transform="translate(1237 359)" color="#DC6803">
+      <rect class="icon" x="0" y="0" width="48" height="33" rx="3" />
+      <path class="icon" d="M8 41 H40 M18 33 L15 41 M30 33 L33 41" />
+      <circle cx="24" cy="13" r="5" fill="none" stroke="#DC6803" stroke-width="2" />
+      <path class="icon" d="M15 28 C17 20 31 20 33 28" />
+    </g>
+    <text class="node-title" x="1306" y="372">Presenter</text>
+    <text class="node-detail" x="1306" y="402">登入 session 控制頁碼</text>
+  </g>
+  <g>
+    <rect class="node" x="1210" y="515" width="295" height="105" rx="10" stroke="#65BEB7" />
+    <g transform="translate(1234 548)" color="#0E9384">
+      <rect class="icon" x="0" y="8" width="25" height="20" rx="2" />
+      <rect class="icon" x="15" y="0" width="25" height="20" rx="2" />
+      <rect class="icon" x="30" y="8" width="25" height="20" rx="2" />
+      <path class="icon" d="M7 34 H48" />
+    </g>
+    <text class="node-title" x="1306" y="556">觀眾畫面 × N</text>
+    <text class="node-detail" x="1306" y="586">固定 <tspan class="code">/slide/&lt;id&gt;/</tspan> 連結</text>
+  </g>
+  <g>
+    <rect class="node" x="1210" y="690" width="295" height="88" rx="10" stroke="#65BEB7" />
+    <g transform="translate(1239 709)" color="#0E9384">
+      <path class="icon" d="M4 0 H29 L40 11 V46 H4 Z M29 0 V11 H40" />
+      <path class="icon" d="M22 18 V35 M14 28 L22 36 L30 28" />
+    </g>
+    <text class="node-title" x="1306" y="727">PDF</text>
+    <text class="node-detail" x="1306" y="753">另存於使用者瀏覽器</text>
+  </g>
+</svg>
